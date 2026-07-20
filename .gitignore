@@ -67,3 +67,6 @@ next-env.d.ts
 # saree product photos (code only push)
 /public/images/products/
 
+
+.vercel
+.env*
