@@ -1,0 +1,105 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { getProductBySlug, getRelatedProducts, parseImages } from "@/lib/products";
+import { formatINR } from "@/lib/money";
+import ProductGallery from "@/components/ProductGallery";
+import AddToCart from "@/components/AddToCart";
+import ProductCard from "@/components/ProductCard";
+
+export default async function ProductPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const product = await getProductBySlug(slug);
+  if (!product) notFound();
+
+  const images = parseImages(product.images);
+  const related = await getRelatedProducts(product.categoryId, product.id, 4);
+
+  return (
+    <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <nav className="mb-6 text-xs text-ink/50">
+        <Link href="/" className="hover:text-green">Home</Link> /{" "}
+        <Link href={`/shop?category=${product.category.slug}`} className="hover:text-green">
+          {product.category.name}
+        </Link>{" "}
+        / <span className="text-ink/70">{product.name}</span>
+      </nav>
+
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
+        <ProductGallery images={images} name={product.name} />
+
+        <div>
+          <p className="text-xs uppercase tracking-wide text-gold">{product.category.name}</p>
+          <h1 className="mt-1 font-serif text-3xl font-bold text-ink">{product.name}</h1>
+          <p className="mt-1 text-sm text-ink/50">{product.fabric} · {product.color}</p>
+
+          <div className="mt-4 flex items-baseline gap-3">
+            <span className="text-2xl font-semibold text-green">
+              {formatINR(product.price)}
+            </span>
+            {product.compareAtPrice && (
+              <>
+                <span className="text-base text-ink/40 line-through">
+                  {formatINR(product.compareAtPrice)}
+                </span>
+                <span className="rounded-full bg-gold/15 px-2 py-0.5 text-xs font-semibold text-green-dark">
+                  {Math.round(
+                    ((product.compareAtPrice - product.price) / product.compareAtPrice) * 100
+                  )}
+                  % off
+                </span>
+              </>
+            )}
+          </div>
+          <p className="mt-1 text-xs text-ink/40">Inclusive of all taxes</p>
+
+          <p className="mt-6 leading-relaxed text-ink/70">{product.description}</p>
+
+          <div className="mt-6 grid grid-cols-2 gap-4 rounded-lg border border-gold/15 bg-white p-4 text-sm">
+            <div>
+              <p className="text-ink/40">Fabric</p>
+              <p className="font-medium">{product.fabric}</p>
+            </div>
+            <div>
+              <p className="text-ink/40">Colour</p>
+              <p className="font-medium">{product.color}</p>
+            </div>
+            <div>
+              <p className="text-ink/40">Saree Length</p>
+              <p className="font-medium">6.3 m (with blouse piece)</p>
+            </div>
+            <div>
+              <p className="text-ink/40">Wash Care</p>
+              <p className="font-medium">Dry clean recommended</p>
+            </div>
+          </div>
+
+          <div className="mt-6">
+            <AddToCart
+              productId={product.id}
+              slug={product.slug}
+              name={product.name}
+              image={images[0] ?? ""}
+              price={product.price}
+              stock={product.stock}
+            />
+          </div>
+        </div>
+      </div>
+
+      {related.length > 0 && (
+        <section className="mt-16">
+          <h2 className="mb-6 font-serif text-2xl font-bold text-ink">You may also like</h2>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            {related.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        </section>
+      )}
+    </div>
+  );
+}
