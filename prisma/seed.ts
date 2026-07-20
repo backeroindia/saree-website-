@@ -67,7 +67,7 @@ const products = [
     compareAtPrice: 279900,
     category: "silk-cotton-sarees",
     featured: true,
-    images: 5,
+    images: 4,
   },
   {
     folder: "4",
@@ -139,6 +139,66 @@ const products = [
     featured: true,
     images: 4,
   },
+  {
+    folder: "10",
+    name: "Rust Copper Cotton Saree with Zari Fan Pallu",
+    slug: "rust-copper-cotton-zari-fan-pallu",
+    description:
+      "A warm rust-copper handloom cotton saree finished with fine gold pinstripes, paired with a deep maroon zari border of woven medallions and a bold fan-shaped pallu.",
+    fabric: "Handloom Cotton",
+    color: "Rust Copper",
+    price: 199900,
+    compareAtPrice: 229900,
+    category: "cotton-sarees",
+    featured: false,
+    images: 4,
+    ext: "jpg",
+  },
+  {
+    folder: "11",
+    name: "Beige Checked Cotton Saree with Wine Zari Peacock Border",
+    slug: "beige-checked-cotton-wine-peacock-border",
+    description:
+      "A soft beige checked cotton saree bordered in deep wine with intricately woven gold zari peacocks and florals, balancing everyday ease with festive shine.",
+    fabric: "Cotton",
+    color: "Beige",
+    price: 189900,
+    compareAtPrice: null,
+    category: "cotton-sarees",
+    featured: false,
+    images: 4,
+    ext: "jpg",
+  },
+  {
+    folder: "12",
+    name: "Mustard Checked Cotton Saree with Peacock Zari Border",
+    slug: "mustard-checked-cotton-peacock-zari-border",
+    description:
+      "A warm mustard checked cotton saree paired with a dark aubergine-brown checked border, densely woven with gold zari peacock and floral motifs.",
+    fabric: "Cotton",
+    color: "Mustard",
+    price: 189900,
+    compareAtPrice: 209900,
+    category: "cotton-sarees",
+    featured: false,
+    images: 4,
+    ext: "jpg",
+  },
+  {
+    folder: "13",
+    name: "Golden Mustard Checked Cotton Saree with Peacock Motif Border",
+    slug: "golden-mustard-checked-cotton-peacock-motif-border",
+    description:
+      "A golden mustard checked cotton saree with a deep maroon checked border, its gold zari peacock medallions catching the light for a festive glow.",
+    fabric: "Cotton",
+    color: "Golden Mustard",
+    price: 194900,
+    compareAtPrice: null,
+    category: "cotton-sarees",
+    featured: false,
+    images: 4,
+    ext: "jpg",
+  },
 ];
 
 async function main() {
@@ -155,9 +215,10 @@ async function main() {
 
   console.log("Seeding products...");
   for (const p of products) {
+    const ext = p.ext ?? "png";
     const images = Array.from(
       { length: p.images },
-      (_, i) => `/images/products/${p.folder}/photo-${i + 1}.png`
+      (_, i) => `/images/products/${p.folder}/photo-${i + 1}.${ext}`
     );
     await prisma.product.upsert({
       where: { slug: p.slug },
