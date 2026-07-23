@@ -79,17 +79,9 @@ export default async function ProductPage({
               {formatINR(product.price)}
             </span>
             {product.compareAtPrice && (
-              <>
-                <span className="text-base text-ink/40 line-through">
-                  {formatINR(product.compareAtPrice)}
-                </span>
-                <span className="rounded-full bg-gold/15 px-2 py-0.5 text-xs font-semibold text-green-dark">
-                  {Math.round(
-                    ((product.compareAtPrice - product.price) / product.compareAtPrice) * 100
-                  )}
-                  % off
-                </span>
-              </>
+              <span className="text-base text-ink/40 line-through">
+                {formatINR(product.compareAtPrice)}
+              </span>
             )}
           </div>
           <p className="mt-1 text-xs text-ink/40">Inclusive of all taxes</p>

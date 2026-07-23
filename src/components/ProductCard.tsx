@@ -29,12 +29,6 @@ export default function ProductCard({
   const images = parseImages(product.images);
   const image = images[0];
   const reviews = product.reviews ?? [];
-  const discount =
-    product.compareAtPrice && product.compareAtPrice > product.price
-      ? Math.round(
-          ((product.compareAtPrice - product.price) / product.compareAtPrice) * 100
-        )
-      : null;
 
   return (
     <Link
@@ -53,11 +47,6 @@ export default function ProductCard({
           />
         )}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-green-dark/20 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-        {discount && (
-          <span className="animate-scale-in absolute left-2 top-2 rounded-full bg-gold px-2 py-1 text-[11px] font-semibold text-background">
-            {discount}% OFF
-          </span>
-        )}
         {product.stock <= 0 && (
           <span className="absolute inset-x-0 bottom-0 bg-ink/80 py-1 text-center text-xs font-medium text-white">
             Out of stock
