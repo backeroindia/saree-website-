@@ -30,6 +30,8 @@
   --animate-pop: pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   --animate-shimmer: shimmer 2.5s linear infinite;
   --animate-marquee: marquee 22s linear infinite;
+  --animate-ken-burns: ken-burns 6s ease-out both;
+  --animate-float: float 3.5s ease-in-out infinite;
 }
 
 body {
@@ -73,6 +75,16 @@ body {
 @keyframes marquee {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
+}
+
+@keyframes ken-burns {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 
 input, select, textarea, button {

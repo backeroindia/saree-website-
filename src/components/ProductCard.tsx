@@ -1,9 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { formatINR } from "@/lib/money";
-import { parseImages } from "@/lib/products";
+import { parseImages, averageRating } from "@/lib/products";
+import StarRating from "@/components/StarRating";
+import WishlistButton from "@/components/WishlistButton";
 
 type ProductCardProduct = {
+  id: string;
   slug: string;
   name: string;
   price: number;
@@ -13,11 +16,19 @@ type ProductCardProduct = {
   color: string;
   stock: number;
   category: { name: string };
+  reviews?: { rating: number }[];
 };
 
-export default function ProductCard({ product }: { product: ProductCardProduct }) {
+export default function ProductCard({
+  product,
+  wishlisted = false,
+}: {
+  product: ProductCardProduct;
+  wishlisted?: boolean;
+}) {
   const images = parseImages(product.images);
   const image = images[0];
+  const reviews = product.reviews ?? [];
   const discount =
     product.compareAtPrice && product.compareAtPrice > product.price
       ? Math.round(
@@ -31,6 +42,7 @@ export default function ProductCard({ product }: { product: ProductCardProduct }
       className="group block overflow-hidden rounded-xl border border-gold/15 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-gold/50 hover:shadow-xl hover:shadow-green/10"
     >
       <div className="relative aspect-[3/4] w-full overflow-hidden bg-ivory">
+        <WishlistButton productId={product.id} initialWishlisted={wishlisted} />
         {image && (
           <Image
             src={image}
@@ -62,6 +74,11 @@ export default function ProductCard({ product }: { product: ProductCardProduct }
         <p className="mt-1 text-xs text-ink/50">
           {product.fabric} · {product.color}
         </p>
+        {reviews.length > 0 && (
+          <div className="mt-1">
+            <StarRating rating={averageRating(reviews)} count={reviews.length} />
+          </div>
+        )}
         <div className="mt-2 flex items-baseline gap-2">
           <span className="text-sm font-semibold text-green">
             {formatINR(product.price)}

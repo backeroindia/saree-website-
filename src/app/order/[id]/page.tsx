@@ -5,6 +5,9 @@ import { CheckCircle2 } from "lucide-react";
 import { prisma } from "@/lib/db";
 import { getSession } from "@/lib/auth";
 import { formatINR } from "@/lib/money";
+import CancelOrderButton from "@/components/CancelOrderButton";
+
+const CANCELLABLE_STATUSES = ["PENDING", "CONFIRMED"];
 
 const STATUS_LABEL: Record<string, string> = {
   PENDING: "Order Placed",
@@ -21,7 +24,6 @@ export default async function OrderPage({
 }) {
   const { id } = await params;
   const session = await getSession();
-  if (!session) redirect(`/login?next=/order/${id}`);
 
   const order = await prisma.order.findUnique({
     where: { id },
@@ -29,7 +31,12 @@ export default async function OrderPage({
   });
 
   if (!order) notFound();
-  if (order.userId !== session.sub && session.role !== "ADMIN") notFound();
+
+  const isGuestOrder = order.userId === null;
+  if (!isGuestOrder) {
+    if (!session) redirect(`/login?next=/order/${id}`);
+    if (order.userId !== session.sub && session.role !== "ADMIN") notFound();
+  }
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
@@ -54,6 +61,12 @@ export default async function OrderPage({
             </p>
           </div>
         </div>
+
+        {!isGuestOrder && CANCELLABLE_STATUSES.includes(order.status) && (
+          <div className="border-b border-gold/15 py-3">
+            <CancelOrderButton orderId={order.id} />
+          </div>
+        )}
 
         <ul className="divide-y divide-gold/10">
           {order.items.map((item) => (
@@ -103,13 +116,21 @@ export default async function OrderPage({
         </p>
       </div>
 
+      {isGuestOrder && (
+        <p className="mt-6 text-center text-sm text-ink/50">
+          We&rsquo;ve emailed a copy of this order to {order.guestEmail}. Bookmark this page to check its status later.
+        </p>
+      )}
+
       <div className="mt-8 flex justify-center gap-4">
-        <Link
-          href="/account"
-          className="rounded-full border border-gold px-6 py-3 text-sm font-semibold text-green-dark hover:bg-gold"
-        >
-          View My Orders
-        </Link>
+        {!isGuestOrder && (
+          <Link
+            href="/account"
+            className="rounded-full border border-gold px-6 py-3 text-sm font-semibold text-green-dark hover:bg-gold"
+          >
+            View My Orders
+          </Link>
+        )}
         <Link
           href="/shop"
           className="rounded-full bg-gold px-6 py-3 text-sm font-semibold text-green-dark hover:bg-gold-hover"

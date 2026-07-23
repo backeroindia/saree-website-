@@ -7,6 +7,17 @@ import { useCartStore } from "@/lib/cart-store";
 import { formatINR } from "@/lib/money";
 
 type Session = { id: string; name: string; email: string } | null;
+type SavedAddress = {
+  id: string;
+  fullName: string;
+  phone: string;
+  line1: string;
+  line2: string | null;
+  city: string;
+  state: string;
+  pincode: string;
+  isDefault: boolean;
+};
 
 const RAZORPAY_ENABLED = Boolean(process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID);
 
@@ -22,6 +33,13 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<"COD" | "RAZORPAY">("COD");
+  const [guestEmail, setGuestEmail] = useState("");
+  const [couponInput, setCouponInput] = useState("");
+  const [couponStatus, setCouponStatus] = useState<"idle" | "checking" | "applied" | "error">("idle");
+  const [couponError, setCouponError] = useState<string | null>(null);
+  const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; discount: number } | null>(null);
+  const [savedAddresses, setSavedAddresses] = useState<SavedAddress[]>([]);
+  const [selectedAddressId, setSelectedAddressId] = useState<string | "new" | null>(null);
   const [form, setForm] = useState({
     fullName: "",
     phone: "",
@@ -41,28 +59,23 @@ export default function CheckoutPage() {
         if (data.user?.name) {
           setForm((f) => ({ ...f, fullName: data.user.name }));
         }
+        if (data.user) {
+          fetch("/api/account/addresses")
+            .then((r) => r.json())
+            .then((addrData) => {
+              const addrs: SavedAddress[] = addrData.addresses ?? [];
+              setSavedAddresses(addrs);
+              const preferred = addrs.find((a) => a.isDefault) ?? addrs[0];
+              setSelectedAddressId(preferred ? preferred.id : "new");
+            });
+        } else {
+          setSelectedAddressId("new");
+        }
       })
       .finally(() => setCheckingSession(false));
   }, []);
 
   if (!mounted || checkingSession) return null;
-
-  if (!session) {
-    return (
-      <div className="mx-auto max-w-md px-4 py-24 text-center">
-        <h1 className="font-serif text-2xl font-bold text-ink">Sign in to checkout</h1>
-        <p className="mt-2 text-ink/60">
-          Please sign in or create an account to place your order.
-        </p>
-        <Link
-          href="/login?next=/checkout"
-          className="mt-6 inline-block rounded-full bg-gold px-6 py-3 text-sm font-semibold text-green-dark hover:bg-gold-hover"
-        >
-          Sign In
-        </Link>
-      </div>
-    );
-  }
 
   if (items.length === 0) {
     return (
@@ -79,7 +92,40 @@ export default function CheckoutPage() {
   }
 
   const shipping = subtotal >= 199900 ? 0 : 9900;
-  const total = subtotal + shipping;
+  const discount = appliedCoupon?.discount ?? 0;
+  const total = subtotal - discount + shipping;
+
+  async function handleApplyCoupon() {
+    if (!couponInput.trim()) return;
+    setCouponStatus("checking");
+    setCouponError(null);
+    try {
+      const res = await fetch("/api/coupons/validate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: couponInput.trim(), subtotal }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setCouponStatus("error");
+        setCouponError(data.error ?? "Invalid coupon");
+        setAppliedCoupon(null);
+        return;
+      }
+      setAppliedCoupon({ code: data.code, discount: data.discount });
+      setCouponStatus("applied");
+    } catch {
+      setCouponStatus("error");
+      setCouponError("Network error. Please try again.");
+    }
+  }
+
+  function handleRemoveCoupon() {
+    setAppliedCoupon(null);
+    setCouponInput("");
+    setCouponStatus("idle");
+    setCouponError(null);
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -91,8 +137,10 @@ export default function CheckoutPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           items: items.map((i) => ({ productId: i.productId, quantity: i.quantity })),
-          address: form,
+          ...(showAddressForm ? { address: form } : { addressId: selectedAddressId }),
           paymentMethod,
+          ...(session ? {} : { guestEmail }),
+          ...(appliedCoupon ? { couponCode: appliedCoupon.code } : {}),
         }),
       });
       const data = await res.json();
@@ -109,31 +157,96 @@ export default function CheckoutPage() {
     }
   }
 
+  const showAddressForm = !session || selectedAddressId === "new" || savedAddresses.length === 0;
+
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
       <h1 className="font-serif text-3xl font-bold text-ink">Checkout</h1>
 
       <form onSubmit={handleSubmit} className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
-          <div className="rounded-xl border border-gold/15 bg-white p-6">
-            <h2 className="font-serif text-lg font-semibold text-ink">Shipping Address</h2>
-            <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {!session && (
+            <div className="rounded-xl border border-gold/15 bg-white p-6">
+              <div className="flex items-center justify-between">
+                <h2 className="font-serif text-lg font-semibold text-ink">Contact</h2>
+                <Link href="/login?next=/checkout" className="text-sm text-green hover:underline">
+                  Sign in instead
+                </Link>
+              </div>
+              <p className="mt-1 text-xs text-ink/50">Checking out as a guest. We&rsquo;ll email your order confirmation here.</p>
               <input
                 required
+                type="email"
+                placeholder="Email Address"
+                value={guestEmail}
+                onChange={(e) => setGuestEmail(e.target.value)}
+                className="mt-4 w-full rounded-lg border border-gold/30 px-3 py-2 text-sm outline-none focus:border-gold"
+              />
+            </div>
+          )}
+
+          <div className="rounded-xl border border-gold/15 bg-white p-6">
+            <h2 className="font-serif text-lg font-semibold text-ink">Shipping Address</h2>
+
+            {session && savedAddresses.length > 0 && (
+              <div className="mt-4 space-y-2">
+                {savedAddresses.map((a) => (
+                  <label
+                    key={a.id}
+                    className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 text-sm transition-colors ${
+                      selectedAddressId === a.id ? "border-gold bg-gold/5" : "border-gold/30"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="savedAddress"
+                      className="mt-1"
+                      checked={selectedAddressId === a.id}
+                      onChange={() => setSelectedAddressId(a.id)}
+                    />
+                    <div>
+                      <p className="font-medium text-ink">
+                        {a.fullName} {a.isDefault && <span className="text-xs text-gold">(Default)</span>}
+                      </p>
+                      <p className="text-ink/60">
+                        {a.line1}{a.line2 && `, ${a.line2}`}, {a.city}, {a.state} - {a.pincode}
+                      </p>
+                    </div>
+                  </label>
+                ))}
+                <label
+                  className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 text-sm transition-colors ${
+                    selectedAddressId === "new" ? "border-gold bg-gold/5" : "border-gold/30"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="savedAddress"
+                    checked={selectedAddressId === "new"}
+                    onChange={() => setSelectedAddressId("new")}
+                  />
+                  <span className="font-medium text-ink">Use a new address</span>
+                </label>
+              </div>
+            )}
+
+            <div className={`mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 ${showAddressForm ? "" : "hidden"}`}>
+              <input
+                required={showAddressForm}
                 placeholder="Full Name"
                 value={form.fullName}
                 onChange={(e) => setForm({ ...form, fullName: e.target.value })}
                 className="rounded-lg border border-gold/30 px-3 py-2 text-sm outline-none focus:border-gold sm:col-span-2"
               />
               <input
-                required
+                required={showAddressForm}
                 placeholder="Phone Number"
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
                 className="rounded-lg border border-gold/30 px-3 py-2 text-sm outline-none focus:border-gold sm:col-span-2"
               />
               <input
-                required
+                required={showAddressForm}
                 placeholder="Address Line 1"
                 value={form.line1}
                 onChange={(e) => setForm({ ...form, line1: e.target.value })}
@@ -146,24 +259,28 @@ export default function CheckoutPage() {
                 className="rounded-lg border border-gold/30 px-3 py-2 text-sm outline-none focus:border-gold sm:col-span-2"
               />
               <input
-                required
+                required={showAddressForm}
                 placeholder="City"
                 value={form.city}
                 onChange={(e) => setForm({ ...form, city: e.target.value })}
                 className="rounded-lg border border-gold/30 px-3 py-2 text-sm outline-none focus:border-gold"
               />
               <input
-                required
+                required={showAddressForm}
                 placeholder="State"
                 value={form.state}
                 onChange={(e) => setForm({ ...form, state: e.target.value })}
                 className="rounded-lg border border-gold/30 px-3 py-2 text-sm outline-none focus:border-gold"
               />
               <input
-                required
+                required={showAddressForm}
                 placeholder="Pincode"
+                inputMode="numeric"
+                maxLength={6}
+                pattern="\d{6}"
+                title="Enter a valid 6-digit pincode"
                 value={form.pincode}
-                onChange={(e) => setForm({ ...form, pincode: e.target.value })}
+                onChange={(e) => setForm({ ...form, pincode: e.target.value.replace(/\D/g, "").slice(0, 6) })}
                 className="rounded-lg border border-gold/30 px-3 py-2 text-sm outline-none focus:border-gold sm:col-span-2"
               />
             </div>
@@ -219,11 +336,49 @@ export default function CheckoutPage() {
               </li>
             ))}
           </ul>
+
+          <div className="border-t border-gold/15 pt-3">
+            {appliedCoupon ? (
+              <div className="flex items-center justify-between rounded-lg bg-gold/10 px-3 py-2 text-sm">
+                <span className="font-medium text-green-dark">{appliedCoupon.code} applied</span>
+                <button type="button" onClick={handleRemoveCoupon} className="text-xs text-ink/50 hover:text-red-600">
+                  Remove
+                </button>
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <input
+                  placeholder="Coupon code"
+                  value={couponInput}
+                  onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                  className="min-w-0 flex-1 rounded-lg border border-gold/30 px-3 py-2 text-sm outline-none focus:border-gold"
+                />
+                <button
+                  type="button"
+                  onClick={handleApplyCoupon}
+                  disabled={couponStatus === "checking"}
+                  className="shrink-0 rounded-lg border border-gold/30 px-3 py-2 text-sm font-medium text-green hover:bg-gold/10 disabled:opacity-50"
+                >
+                  {couponStatus === "checking" ? "Checking…" : "Apply"}
+                </button>
+              </div>
+            )}
+            {couponStatus === "error" && couponError && (
+              <p className="mt-1.5 text-xs text-red-600">{couponError}</p>
+            )}
+          </div>
+
           <div className="space-y-2 border-t border-gold/15 pt-3 text-sm">
             <div className="flex justify-between text-ink/70">
               <span>Subtotal</span>
               <span>{formatINR(subtotal)}</span>
             </div>
+            {discount > 0 && (
+              <div className="flex justify-between text-green">
+                <span>Discount</span>
+                <span>-{formatINR(discount)}</span>
+              </div>
+            )}
             <div className="flex justify-between text-ink/70">
               <span>Shipping</span>
               <span>{shipping === 0 ? "Free" : formatINR(shipping)}</span>

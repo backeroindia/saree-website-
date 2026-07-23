@@ -168,6 +168,8 @@ const products = [
     featured: false,
     images: 4,
     ext: "jpg",
+    // photo-1 has a blur/ghosting artifact — lead with the clean shots instead.
+    imageOrder: [2, 3, 4, 1],
   },
   {
     folder: "12",
@@ -216,10 +218,8 @@ async function main() {
   console.log("Seeding products...");
   for (const p of products) {
     const ext = p.ext ?? "png";
-    const images = Array.from(
-      { length: p.images },
-      (_, i) => `/images/products/${p.folder}/photo-${i + 1}.${ext}`
-    );
+    const order = p.imageOrder ?? Array.from({ length: p.images }, (_, i) => i + 1);
+    const images = order.map((n) => `/images/products/${p.folder}/photo-${n}.${ext}`);
     await prisma.product.upsert({
       where: { slug: p.slug },
       update: {

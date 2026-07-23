@@ -15,7 +15,7 @@ export default function ProductGallery({
 
   return (
     <div>
-      <div className="animate-fade-in relative aspect-[3/4] w-full overflow-hidden rounded-xl border border-gold/15 bg-white">
+      <div className="animate-fade-in relative aspect-[3/4] w-full overflow-hidden rounded-xl border border-gold/15 bg-ivory">
         {images[active] && (
           <Image
             key={images[active]}
@@ -35,7 +35,7 @@ export default function ProductGallery({
               key={img}
               onClick={() => setActive(i)}
               className={clsx(
-                "relative aspect-square overflow-hidden rounded-lg border-2 bg-white transition-all duration-200 hover:opacity-90",
+                "relative aspect-square overflow-hidden rounded-lg border-2 bg-ivory transition-all duration-200 hover:opacity-90",
                 i === active
                   ? "border-gold shadow-md shadow-gold/20"
                   : "border-transparent hover:border-gold/30"

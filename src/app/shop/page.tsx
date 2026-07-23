@@ -1,5 +1,8 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { getCategories, getProducts } from "@/lib/products";
+import { getWishlistedProductIds } from "@/lib/wishlist";
+import { prisma } from "@/lib/db";
 import ProductCard from "@/components/ProductCard";
 import SortSelect from "@/components/SortSelect";
 import clsx from "clsx";
@@ -18,13 +21,33 @@ type SearchParams = {
   max?: string;
 };
 
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<SearchParams>;
+}): Promise<Metadata> {
+  const sp = await searchParams;
+  if (!sp.category) {
+    return {
+      title: "Shop All Sarees | N.INIYAZHL",
+      description: "Browse handloom cotton, silk cotton and printed sarees. Pan-India shipping, cash on delivery available.",
+    };
+  }
+  const category = await prisma.category.findUnique({ where: { slug: sp.category } });
+  if (!category) return {};
+  return {
+    title: `${category.name} | N.INIYAZHL`,
+    description: category.description ?? `Shop ${category.name} at N.INIYAZHL — handloom & silk sarees.`,
+  };
+}
+
 export default async function ShopPage({
   searchParams,
 }: {
   searchParams: Promise<SearchParams>;
 }) {
   const sp = await searchParams;
-  const [categories, products] = await Promise.all([
+  const [categories, products, wishlistIds] = await Promise.all([
     getCategories(),
     getProducts({
       categorySlug: sp.category,
@@ -33,6 +56,7 @@ export default async function ShopPage({
       minPrice: sp.min ? Number(sp.min) : undefined,
       maxPrice: sp.max ? Number(sp.max) : undefined,
     }),
+    getWishlistedProductIds(),
   ]);
 
   const activeCategory = categories.find((c) => c.slug === sp.category);
@@ -151,7 +175,7 @@ export default async function ShopPage({
                   className="animate-fade-in-up"
                   style={{ animationDelay: `${(i % 6) * 60}ms` }}
                 >
-                  <ProductCard product={p} />
+                  <ProductCard product={p} wishlisted={wishlistIds.has(p.id)} />
                 </div>
               ))}
             </div>

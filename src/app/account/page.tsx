@@ -1,10 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import { redirect } from "next/navigation";
+import { MapPin, Heart } from "lucide-react";
 import { getSession } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { formatINR } from "@/lib/money";
 import LogoutButton from "@/components/LogoutButton";
+import CancelOrderButton from "@/components/CancelOrderButton";
+
+const CANCELLABLE_STATUSES = ["PENDING", "CONFIRMED"];
 
 const STATUS_STYLE: Record<string, string> = {
   PENDING: "bg-amber-100 text-amber-700",
@@ -34,6 +38,21 @@ export default async function AccountPage() {
         <LogoutButton className="rounded-full border border-gold px-4 py-2 text-sm font-medium text-green-dark hover:bg-gold" />
       </div>
 
+      <div className="mt-6 flex flex-wrap gap-3">
+        <Link
+          href="/account/addresses"
+          className="flex items-center gap-2 rounded-full border border-gold/30 bg-white px-4 py-2 text-sm font-medium text-ink/80 transition-colors hover:bg-gold/10 hover:text-green"
+        >
+          <MapPin className="h-4 w-4" /> Saved Addresses
+        </Link>
+        <Link
+          href="/account/wishlist"
+          className="flex items-center gap-2 rounded-full border border-gold/30 bg-white px-4 py-2 text-sm font-medium text-ink/80 transition-colors hover:bg-gold/10 hover:text-green"
+        >
+          <Heart className="h-4 w-4" /> Wishlist
+        </Link>
+      </div>
+
       <h2 className="mt-10 mb-4 font-serif text-xl font-semibold text-ink">Order History</h2>
 
       {orders.length === 0 ? (
@@ -48,41 +67,47 @@ export default async function AccountPage() {
       ) : (
         <div className="space-y-4">
           {orders.map((order) => (
-            <Link
+            <div
               key={order.id}
-              href={`/order/${order.id}`}
-              className="block rounded-xl border border-gold/15 bg-white p-5 transition hover:shadow-md"
+              className="rounded-xl border border-gold/15 bg-white p-5 transition hover:shadow-md"
             >
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div>
-                  <p className="text-sm font-semibold text-ink">#{order.orderNumber}</p>
-                  <p className="text-xs text-ink/50">
-                    {new Date(order.createdAt).toLocaleDateString("en-IN", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                    })}
+              <Link href={`/order/${order.id}`} className="block">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div>
+                    <p className="text-sm font-semibold text-ink">#{order.orderNumber}</p>
+                    <p className="text-xs text-ink/50">
+                      {new Date(order.createdAt).toLocaleDateString("en-IN", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </p>
+                  </div>
+                  <span
+                    className={`rounded-full px-3 py-1 text-xs font-medium ${STATUS_STYLE[order.status]}`}
+                  >
+                    {order.status}
+                  </span>
+                </div>
+                <div className="mt-3 flex items-center gap-2">
+                  {order.items.slice(0, 4).map((item) => (
+                    <div key={item.id} className="relative h-12 w-10 overflow-hidden rounded bg-ivory">
+                      {item.image && (
+                        <Image src={item.image} alt={item.name} fill sizes="2.5rem" className="object-cover" />
+                      )}
+                    </div>
+                  ))}
+                  <p className="ml-auto text-sm font-semibold text-green">
+                    {formatINR(order.total)}
                   </p>
                 </div>
-                <span
-                  className={`rounded-full px-3 py-1 text-xs font-medium ${STATUS_STYLE[order.status]}`}
-                >
-                  {order.status}
-                </span>
-              </div>
-              <div className="mt-3 flex items-center gap-2">
-                {order.items.slice(0, 4).map((item) => (
-                  <div key={item.id} className="relative h-12 w-10 overflow-hidden rounded bg-ivory">
-                    {item.image && (
-                      <Image src={item.image} alt={item.name} fill sizes="2.5rem" className="object-cover" />
-                    )}
-                  </div>
-                ))}
-                <p className="ml-auto text-sm font-semibold text-green">
-                  {formatINR(order.total)}
-                </p>
-              </div>
-            </Link>
+              </Link>
+              {CANCELLABLE_STATUSES.includes(order.status) && (
+                <div className="mt-3 border-t border-gold/10 pt-3">
+                  <CancelOrderButton orderId={order.id} />
+                </div>
+              )}
+            </div>
           ))}
         </div>
       )}

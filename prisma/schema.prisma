@@ -34,17 +34,24 @@ enum PaymentStatus {
   FAILED
 }
 
+enum CouponType {
+  PERCENT
+  FLAT
+}
+
 model User {
-  id           String    @id @default(cuid())
+  id           String               @id @default(cuid())
   name         String
-  email        String    @unique
+  email        String               @unique
   passwordHash String
-  role         Role      @default(CUSTOMER)
+  role         Role                 @default(CUSTOMER)
   phone        String?
-  createdAt    DateTime  @default(now())
+  createdAt    DateTime             @default(now())
   addresses    Address[]
   orders       Order[]
   reviews      Review[]
+  wishlist     WishlistItem[]
+  resetTokens  PasswordResetToken[]
 }
 
 model Category {
@@ -73,6 +80,48 @@ model Product {
   updatedAt     DateTime    @updatedAt
   orderItems    OrderItem[]
   reviews       Review[]
+  wishlistedBy  WishlistItem[]
+}
+
+model WishlistItem {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+}
+
+model Coupon {
+  id            String     @id @default(cuid())
+  code          String     @unique
+  type          CouponType
+  value         Int
+  minOrderValue Int        @default(0)
+  maxUses       Int?
+  usedCount     Int        @default(0)
+  active        Boolean    @default(true)
+  expiresAt     DateTime?
+  createdAt     DateTime   @default(now())
+  orders        Order[]
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
 }
 
 model Review {
@@ -84,12 +133,14 @@ model Review {
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, userId])
 }
 
 model Address {
   id        String  @id @default(cuid())
-  userId    String
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String?
+  user      User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
   fullName  String
   phone     String
   line1     String
@@ -104,12 +155,17 @@ model Address {
 model Order {
   id              String        @id @default(cuid())
   orderNumber     String        @unique
-  userId          String
-  user            User          @relation(fields: [userId], references: [id])
+  userId          String?
+  user            User?         @relation(fields: [userId], references: [id])
+  guestName       String?
+  guestEmail      String?
   addressId       String
   address         Address       @relation(fields: [addressId], references: [id])
   items           OrderItem[]
   subtotal        Int
+  discount        Int           @default(0)
+  couponId        String?
+  coupon          Coupon?       @relation(fields: [couponId], references: [id])
   shipping        Int
   total           Int
   status          OrderStatus   @default(PENDING)

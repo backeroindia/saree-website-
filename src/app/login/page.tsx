@@ -54,6 +54,11 @@ function LoginForm() {
           onChange={(e) => setForm({ ...form, password: e.target.value })}
           className="w-full rounded-lg border border-gold/30 px-3 py-2.5 text-sm outline-none focus:border-gold"
         />
+        <div className="text-right">
+          <Link href="/forgot-password" className="text-xs text-green hover:underline">
+            Forgot password?
+          </Link>
+        </div>
         {error && <p className="animate-fade-in-up text-sm text-red-600">{error}</p>}
         <button
           type="submit"

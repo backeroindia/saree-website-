@@ -13,11 +13,56 @@ export async function getCategories() {
   return prisma.category.findMany({ orderBy: { name: "asc" } });
 }
 
+export function averageRating(reviews: { rating: number }[]): number {
+  if (reviews.length === 0) return 0;
+  return reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+}
+
 export async function getFeaturedProducts(limit = 4) {
   return prisma.product.findMany({
     where: { featured: true },
-    include: { category: true },
+    include: { category: true, reviews: { select: { rating: true } } },
     orderBy: { createdAt: "desc" },
+    take: limit,
+  });
+}
+
+export async function getNewArrivals(limit = 4) {
+  return prisma.product.findMany({
+    include: { category: true, reviews: { select: { rating: true } } },
+    orderBy: { createdAt: "desc" },
+    take: limit,
+  });
+}
+
+export async function getBestsellers(limit = 4) {
+  const grouped = await prisma.orderItem.groupBy({
+    by: ["productId"],
+    _sum: { quantity: true },
+    orderBy: { _sum: { quantity: "desc" } },
+    take: limit,
+  });
+
+  if (grouped.length === 0) {
+    return getFeaturedProducts(limit);
+  }
+
+  const products = await prisma.product.findMany({
+    where: { id: { in: grouped.map((g) => g.productId) } },
+    include: { category: true, reviews: { select: { rating: true } } },
+  });
+  const productMap = new Map(products.map((p) => [p.id, p]));
+
+  return grouped
+    .map((g) => productMap.get(g.productId))
+    .filter((p): p is NonNullable<typeof p> => Boolean(p));
+}
+
+export async function getTopReviews(limit = 6) {
+  return prisma.review.findMany({
+    where: { rating: { gte: 4 } },
+    include: { user: { select: { name: true } }, product: { select: { name: true, slug: true } } },
+    orderBy: [{ rating: "desc" }, { createdAt: "desc" }],
     take: limit,
   });
 }
@@ -61,7 +106,7 @@ export async function getProducts(filters: ProductFilters = {}) {
 
   return prisma.product.findMany({
     where,
-    include: { category: true },
+    include: { category: true, reviews: { select: { rating: true } } },
     orderBy,
   });
 }
@@ -69,14 +114,20 @@ export async function getProducts(filters: ProductFilters = {}) {
 export async function getProductBySlug(slug: string) {
   return prisma.product.findUnique({
     where: { slug },
-    include: { category: true },
+    include: {
+      category: true,
+      reviews: {
+        include: { user: { select: { name: true } } },
+        orderBy: { createdAt: "desc" },
+      },
+    },
   });
 }
 
 export async function getRelatedProducts(categoryId: string, excludeId: string, limit = 4) {
   return prisma.product.findMany({
     where: { categoryId, id: { not: excludeId } },
-    include: { category: true },
+    include: { category: true, reviews: { select: { rating: true } } },
     take: limit,
   });
 }

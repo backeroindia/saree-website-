@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import NewsletterForm from "@/components/NewsletterForm";
 
 export default function Footer() {
   return (
@@ -21,6 +22,12 @@ export default function Footer() {
           <p className="mt-3 text-sm text-ivory/60">
             Handloom and silk sarees, woven with tradition and delivered to your doorstep.
           </p>
+          <div className="mt-4">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gold">
+              Get updates on new arrivals
+            </p>
+            <NewsletterForm />
+          </div>
         </div>
         <div>
           <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gold">
