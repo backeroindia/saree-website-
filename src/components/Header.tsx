@@ -19,9 +19,8 @@ export default async function Header() {
         <div className="animate-marquee flex w-max gap-16 whitespace-nowrap">
           {Array.from({ length: 2 }).map((_, i) => (
             <span key={i} className="flex items-center gap-16 px-4">
-              <span>Free shipping across India on orders above ₹1,999</span>
-              <span className="text-background font-semibold">Cash on Delivery available</span>
-              <span>Handwoven, sourced with care</span>
+              <span>Free shipping across India</span>
+              <span>Handpicked with love</span>
             </span>
           ))}
         </div>
@@ -47,17 +46,18 @@ export default async function Header() {
         </Link>
 
         <nav className="hidden items-center gap-6 text-sm font-medium text-ink/80 md:flex">
+          <span className="flex cursor-not-allowed items-center gap-1.5 py-1 text-ink/35" title="Coming soon">
+            New Arrivals
+            <span className="rounded-full bg-ink/10 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide">Soon</span>
+          </span>
           <Link href="/shop" className="relative py-1 transition-colors hover:text-green after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-gold after:transition-all after:duration-300 hover:after:w-full">
-            All Sarees
+            Saree
           </Link>
-          {categories.map((c) => (
-            <Link
-              key={c.id}
-              href={`/shop?category=${c.slug}`}
-              className="relative py-1 transition-colors hover:text-green after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-gold after:transition-all after:duration-300 hover:after:w-full"
-            >
-              {c.name}
-            </Link>
+          {["Salwar/Kurthi", "Kids", "Men"].map((label) => (
+            <span key={label} className="flex cursor-not-allowed items-center gap-1.5 py-1 text-ink/35" title="Coming soon">
+              {label}
+              <span className="rounded-full bg-ink/10 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide">Soon</span>
+            </span>
           ))}
           <Link href="/about" className="relative py-1 transition-colors hover:text-green after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-gold after:transition-all after:duration-300 hover:after:w-full">
             About

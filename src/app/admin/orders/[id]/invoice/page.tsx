@@ -33,7 +33,7 @@ export default async function OrderInvoicePage({
               N.<span className="text-gold">INIYAZHL</span>
             </p>
             <p className="mt-1 text-xs text-ink/50">Handloom &amp; Silk Sarees</p>
-            <p className="text-xs text-ink/50">support@iniyazhl.shop</p>
+            <p className="text-xs text-ink/50">n.niyazhl@gmail.com</p>
           </div>
           <div className="text-right">
             <h1 className="font-serif text-xl font-bold text-ink">Invoice</h1>

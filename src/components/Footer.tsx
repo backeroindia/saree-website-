@@ -2,6 +2,24 @@ import Link from "next/link";
 import Image from "next/image";
 import NewsletterForm from "@/components/NewsletterForm";
 
+function InstagramIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+    </svg>
+  );
+}
+
+function FacebookIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+    </svg>
+  );
+}
+
 export default function Footer() {
   return (
     <footer className="mt-16 border-t border-gold/20 bg-green-dark text-ivory/80">
@@ -67,9 +85,28 @@ export default function Footer() {
           </h3>
           <ul className="space-y-2 text-sm text-ivory/60">
             <li>Mon–Sat, 10am–7pm IST</li>
-            <li>support@iniyazhl.shop</li>
-            <li>+91 90000 00000</li>
+            <li>n.niyazhl@gmail.com</li>
           </ul>
+          <div className="mt-4 flex items-center gap-3">
+            <a
+              href="https://www.instagram.com/n.iniyazhl/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-ivory/20 text-ivory/70 transition-colors hover:border-background hover:text-background"
+            >
+              <InstagramIcon className="h-4 w-4" />
+            </a>
+            <a
+              href="https://www.facebook.com/profile.php?id=61589376614536"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-ivory/20 text-ivory/70 transition-colors hover:border-background hover:text-background"
+            >
+              <FacebookIcon className="h-4 w-4" />
+            </a>
+          </div>
         </div>
       </div>
       <div className="border-t border-ivory/10 px-4 py-4 sm:px-6 lg:px-8">

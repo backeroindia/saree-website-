@@ -50,8 +50,8 @@ export default function PrivacyPolicyPage() {
         <p>
           You can request a copy of the data we hold about you, ask us to correct it,
           or request account deletion at any time by writing to{" "}
-          <a href="mailto:support@iniyazhl.shop" className="text-green underline">
-            support@iniyazhl.shop
+          <a href="mailto:n.niyazhl@gmail.com" className="text-green underline">
+            n.niyazhl@gmail.com
           </a>
           .
         </p>
@@ -72,7 +72,7 @@ export default function PrivacyPolicyPage() {
           <a href="/contact" className="text-green underline">
             Contact page
           </a>{" "}
-          or email support@iniyazhl.shop.
+          or email n.niyazhl@gmail.com.
         </p>
       </section>
     </LegalLayout>

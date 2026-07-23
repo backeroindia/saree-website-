@@ -56,18 +56,28 @@ export default function MobileNav({
         )}
 
         <nav className="mt-6 flex flex-col gap-1 text-sm font-medium text-ink/80">
+          <span className="flex cursor-not-allowed items-center justify-between rounded-lg px-2 py-2.5 text-ink/35">
+            New Arrivals
+            <span className="rounded-full bg-ink/10 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide">Soon</span>
+          </span>
           <Link href="/shop" onClick={() => setOpen(false)} className="rounded-lg px-2 py-2.5 transition-colors hover:bg-gold/10 hover:text-green">
-            All Sarees
+            Saree
           </Link>
           {categories.map((c) => (
             <Link
               key={c.id}
               href={`/shop?category=${c.slug}`}
               onClick={() => setOpen(false)}
-              className="rounded-lg px-2 py-2.5 transition-colors hover:bg-gold/10 hover:text-green"
+              className="rounded-lg px-2 py-2.5 pl-5 text-xs text-ink/60 transition-colors hover:bg-gold/10 hover:text-green"
             >
               {c.name}
             </Link>
+          ))}
+          {["Salwar/Kurthi", "Kids", "Men"].map((label) => (
+            <span key={label} className="flex cursor-not-allowed items-center justify-between rounded-lg px-2 py-2.5 text-ink/35">
+              {label}
+              <span className="rounded-full bg-ink/10 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide">Soon</span>
+            </span>
           ))}
           <div className="my-2 border-t border-gold/15" />
           <Link href="/about" onClick={() => setOpen(false)} className="rounded-lg px-2 py-2.5 transition-colors hover:bg-gold/10 hover:text-green">

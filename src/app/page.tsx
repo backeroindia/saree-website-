@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Truck, ShieldCheck, RotateCcw, Quote } from "lucide-react";
+import { Truck, Heart, PackageX, Quote } from "lucide-react";
 import {
   getCategories,
   getBestsellers,
@@ -106,9 +106,9 @@ export default async function HomePage() {
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
           {[
-            { icon: Truck, title: "Pan-India Delivery", sub: "Free above ₹1,999" },
-            { icon: ShieldCheck, title: "Cash on Delivery", sub: "Pay when it arrives" },
-            { icon: RotateCcw, title: "Easy Returns", sub: "7-day return window" },
+            { icon: Truck, title: "Pan-India Delivery", sub: "Always free shipping" },
+            { icon: Heart, title: "Handpicked with Love", sub: "Every saree, chosen with care" },
+            { icon: PackageX, title: "No Exchange or Return", sub: "All sales are final" },
           ].map((item, i) => (
             <Reveal key={item.title} delay={i * 100}>
               <div className="flex items-center gap-4 rounded-xl border border-gold/15 bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:border-gold/40 hover:shadow-lg hover:shadow-gold/10">
@@ -131,8 +131,8 @@ export default async function HomePage() {
             {[
               { value: `${bestsellers.length + newArrivals.length}+`, label: "Handloom Sarees" },
               { value: "100%", label: "Authentic Weaves" },
-              { value: "COD", label: "Pay on Delivery" },
-              { value: "7 Days", label: "Easy Returns" },
+              { value: "Free", label: "Shipping, Always" },
+              { value: "Direct", label: "From Weavers" },
             ].map((stat, i) => (
               <Reveal key={stat.label} delay={i * 100} className="text-center">
                 <p className="font-serif text-2xl font-bold text-background sm:text-3xl">{stat.value}</p>

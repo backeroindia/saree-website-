@@ -29,7 +29,7 @@ const wrapper = (body: string) => `
     </div>
     <div style="padding: 24px; background: #fbf8f2;">${body}</div>
     <div style="padding: 16px; text-align: center; font-size: 12px; color: #999;">
-      Handloom &amp; Silk Sarees &middot; support@iniyazhl.shop
+      Handloom &amp; Silk Sarees &middot; n.niyazhl@gmail.com
     </div>
   </div>
 `;

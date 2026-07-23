@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { Star, X } from "lucide-react";
 import clsx from "clsx";
 
 type Category = { id: string; name: string };
@@ -72,6 +73,13 @@ export default function ProductForm({
       images: f.images.includes(src)
         ? f.images.filter((i) => i !== src)
         : [...f.images, src],
+    }));
+  }
+
+  function makeFirstImage(src: string) {
+    setForm((f) => ({
+      ...f,
+      images: [src, ...f.images.filter((i) => i !== src)],
     }));
   }
 
@@ -250,13 +258,40 @@ export default function ProductForm({
         </p>
 
         {form.images.length > 0 && (
-          <div className="mt-4 flex flex-wrap gap-2">
-            {form.images.map((img) => (
-              <div key={img} className="relative h-16 w-14 overflow-hidden rounded-lg border-2 border-gold">
-                <Image src={img} alt="" fill sizes="3.5rem" className="object-cover" />
-              </div>
-            ))}
-          </div>
+          <>
+            <p className="mt-4 text-xs text-ink/50">
+              First photo is the cover image shown in listings — click the star on any other photo to make it the cover.
+            </p>
+            <div className="mt-2 flex flex-wrap gap-3">
+              {form.images.map((img, i) => (
+                <div key={img} className="relative h-16 w-14 overflow-hidden rounded-lg border-2 border-gold">
+                  <Image src={img} alt="" fill sizes="3.5rem" className="object-cover" />
+                  {i === 0 ? (
+                    <span className="absolute left-0 top-0 rounded-br-lg bg-gold px-1 py-0.5 text-[9px] font-semibold uppercase text-background">
+                      Cover
+                    </span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => makeFirstImage(img)}
+                      title="Set as cover image"
+                      className="absolute left-0 top-0 rounded-br-lg bg-black/50 p-1 text-white transition-colors hover:bg-gold"
+                    >
+                      <Star className="h-3 w-3" />
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => toggleImage(img)}
+                    title="Remove"
+                    className="absolute right-0 top-0 rounded-bl-lg bg-black/50 p-1 text-white transition-colors hover:bg-red-600"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </>
         )}
 
         <div className="mt-4 space-y-4 max-h-80 overflow-y-auto pr-1">

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Phone, Clock, MapPin, Send } from "lucide-react";
+import { Mail, Clock, MapPin, Send } from "lucide-react";
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "", company: "" });
@@ -46,8 +46,7 @@ export default function ContactPage() {
       <div className="mt-12 grid grid-cols-1 gap-10 lg:grid-cols-5">
         <div className="space-y-4 lg:col-span-2">
           {[
-            { icon: Phone, title: "Call us", value: "+91 90000 00000" },
-            { icon: Mail, title: "Email us", value: "support@iniyazhl.shop" },
+            { icon: Mail, title: "Email us", value: "n.niyazhl@gmail.com" },
             { icon: Clock, title: "Working hours", value: "Mon–Sat, 10am–7pm IST" },
             { icon: MapPin, title: "Studio", value: "Tiruppur, Tamil Nadu, India" },
           ].map((item) => (

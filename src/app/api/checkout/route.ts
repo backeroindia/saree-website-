@@ -133,7 +133,7 @@ export async function POST(req: NextRequest) {
     discount = Math.min(discount, subtotal);
   }
 
-  const shipping = subtotal >= 199900 ? 0 : 9900;
+  const shipping = 0;
   const total = subtotal - discount + shipping;
 
   try {

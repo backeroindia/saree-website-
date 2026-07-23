@@ -24,12 +24,12 @@ const FAQS = [
   {
     question: "Is shipping free?",
     answer:
-      "Yes — shipping is free on orders above ₹1,999. Orders below that have a flat ₹99 shipping fee.",
+      "Yes — shipping is free on every order, with no minimum order value.",
   },
   {
     question: "Can I return or exchange a saree?",
     answer:
-      "Yes, unused sarees in original packaging can be returned within 7 days of delivery. See our Shipping & Returns page for the full policy.",
+      "We do not offer returns or exchanges. All sales are final — please review the product details, fabric, and size carefully before ordering.",
   },
   {
     question: "How do I track my order?",

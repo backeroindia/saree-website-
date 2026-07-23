@@ -91,7 +91,7 @@ export default function CheckoutPage() {
     );
   }
 
-  const shipping = subtotal >= 199900 ? 0 : 9900;
+  const shipping = 0;
   const discount = appliedCoupon?.discount ?? 0;
   const total = subtotal - discount + shipping;
 

@@ -34,7 +34,7 @@ export default function CartPage() {
     );
   }
 
-  const shipping = subtotal >= 199900 ? 0 : 9900;
+  const shipping = 0;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">

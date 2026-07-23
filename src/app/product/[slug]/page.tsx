@@ -5,6 +5,7 @@ import { getProductBySlug, getRelatedProducts, parseImages, averageRating } from
 import { getWishlistedProductIds } from "@/lib/wishlist";
 import { formatINR } from "@/lib/money";
 import ProductGallery from "@/components/ProductGallery";
+import ProductDescription from "@/components/ProductDescription";
 import AddToCart from "@/components/AddToCart";
 import ProductCard from "@/components/ProductCard";
 import ReviewsSection from "@/components/ReviewsSection";
@@ -93,7 +94,7 @@ export default async function ProductPage({
           </div>
           <p className="mt-1 text-xs text-ink/40">Inclusive of all taxes</p>
 
-          <p className="mt-6 leading-relaxed text-ink/70">{product.description}</p>
+          <ProductDescription description={product.description} />
 
           <div className="mt-6 grid grid-cols-2 gap-4 rounded-lg border border-gold/15 bg-white p-4 text-sm">
             <div>
