@@ -83,7 +83,7 @@ export default function CheckoutPage() {
         <h1 className="font-serif text-2xl font-bold text-ink">Your cart is empty</h1>
         <Link
           href="/shop"
-          className="mt-6 inline-block rounded-full bg-gold px-6 py-3 text-sm font-semibold text-green-dark hover:bg-gold-hover"
+          className="mt-6 inline-block rounded-full bg-gold px-6 py-3 text-sm font-semibold text-background hover:bg-gold-hover"
         >
           Continue Shopping
         </Link>
@@ -392,7 +392,7 @@ export default function CheckoutPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full rounded-full bg-gold px-6 py-3 text-sm font-semibold text-green-dark transition-all duration-300 hover:bg-gold-hover hover:shadow-lg active:scale-95 disabled:opacity-60 disabled:active:scale-100"
+            className="w-full rounded-full bg-gold px-6 py-3 text-sm font-semibold text-background transition-all duration-300 hover:bg-gold-hover hover:shadow-lg active:scale-95 disabled:opacity-60 disabled:active:scale-100"
           >
             {submitting ? "Placing Order…" : "Place Order"}
           </button>

@@ -107,7 +107,7 @@ export default function AddressesPage() {
         {editingId === null && (
           <button
             onClick={startNew}
-            className="flex items-center gap-1.5 rounded-full bg-gold px-4 py-2 text-sm font-semibold text-green-dark transition-all hover:bg-gold-hover"
+            className="flex items-center gap-1.5 rounded-full bg-gold px-4 py-2 text-sm font-semibold text-background transition-all hover:bg-gold-hover"
           >
             <Plus className="h-4 w-4" /> Add Address
           </button>
@@ -142,7 +142,7 @@ export default function AddressesPage() {
           </div>
           {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
           <div className="mt-4 flex gap-3">
-            <button type="submit" disabled={submitting} className="rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-green-dark hover:bg-gold-hover disabled:opacity-60">
+            <button type="submit" disabled={submitting} className="rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-background hover:bg-gold-hover disabled:opacity-60">
               {submitting ? "Saving…" : "Save Address"}
             </button>
             <button type="button" onClick={() => setEditingId(null)} className="rounded-full border border-gold/30 px-5 py-2.5 text-sm font-semibold text-ink/60 hover:bg-gold/10">

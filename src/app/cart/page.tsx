@@ -26,7 +26,7 @@ export default function CartPage() {
         <p className="mt-2 text-ink/60">Add some sarees to get started.</p>
         <Link
           href="/shop"
-          className="mt-6 inline-block rounded-full bg-gold px-6 py-3 text-sm font-semibold text-green-dark transition-all duration-300 hover:bg-gold-hover hover:shadow-lg active:scale-95"
+          className="mt-6 inline-block rounded-full bg-gold px-6 py-3 text-sm font-semibold text-background transition-all duration-300 hover:bg-gold-hover hover:shadow-lg active:scale-95"
         >
           Continue Shopping
         </Link>
@@ -108,7 +108,7 @@ export default function CartPage() {
           </div>
           <Link
             href="/checkout"
-            className="mt-6 block rounded-full bg-gold px-6 py-3 text-center text-sm font-semibold text-green-dark transition-all duration-300 hover:bg-gold-hover hover:shadow-lg active:scale-95"
+            className="mt-6 block rounded-full bg-gold px-6 py-3 text-center text-sm font-semibold text-background transition-all duration-300 hover:bg-gold-hover hover:shadow-lg active:scale-95"
           >
             Proceed to Checkout
           </Link>

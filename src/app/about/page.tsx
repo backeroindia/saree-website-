@@ -18,12 +18,12 @@ export default async function AboutPage() {
       <section className="relative overflow-hidden bg-green">
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 py-16 sm:px-6 md:grid-cols-2 md:py-24 lg:px-8">
           <div className="animate-fade-in-up text-ivory">
-            <span className="inline-flex items-center gap-2 rounded-full bg-ivory/10 px-3 py-1 text-xs font-medium tracking-wide text-gold">
+            <span className="inline-flex items-center gap-2 rounded-full bg-ivory/10 px-3 py-1 text-xs font-medium tracking-wide text-background">
               <Sparkles className="h-3.5 w-3.5" /> Our Story
             </span>
             <h1 className="mt-5 font-serif text-4xl font-bold leading-tight sm:text-5xl">
               Weaving tradition into
-              <span className="block text-gold">everyday elegance</span>
+              <span className="block text-background">everyday elegance</span>
             </h1>
             <p className="mt-4 max-w-md text-ivory/80">
               N.INIYAZHL began with a simple idea: bring authentic handloom and silk
@@ -95,7 +95,7 @@ export default async function AboutPage() {
           <h2 className="font-serif text-2xl font-bold">Ready to find your next saree?</h2>
           <Link
             href="/shop"
-            className="mt-6 inline-block rounded-full bg-gold px-6 py-3 text-sm font-semibold text-green-dark transition-all duration-300 hover:bg-gold-hover hover:shadow-lg active:scale-95"
+            className="mt-6 inline-block rounded-full bg-gold px-6 py-3 text-sm font-semibold text-background transition-all duration-300 hover:bg-gold-hover hover:shadow-lg active:scale-95"
           >
             Browse the Collection
           </Link>

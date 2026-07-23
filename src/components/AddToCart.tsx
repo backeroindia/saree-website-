@@ -63,7 +63,7 @@ export default function AddToCart({ productId, slug, name, image, price, stock }
             setTimeout(() => setAdded(false), 1500);
           }}
           className={`flex flex-1 items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white transition-all duration-300 active:scale-95 ${
-            added ? "bg-green-700 text-white" : "bg-gold text-green-dark hover:bg-gold-hover hover:shadow-lg"
+            added ? "bg-green-700 text-white" : "bg-gold text-background hover:bg-gold-hover hover:shadow-lg"
           }`}
         >
           {added ? (
@@ -78,7 +78,7 @@ export default function AddToCart({ productId, slug, name, image, price, stock }
             addItem({ productId, slug, name, image, price, stock }, qty);
             router.push("/cart");
           }}
-          className="flex-1 rounded-full border border-gold px-6 py-3 text-sm font-semibold text-green-dark transition-all duration-300 hover:bg-gold active:scale-95"
+          className="flex-1 rounded-full border border-gold px-6 py-3 text-sm font-semibold text-background transition-all duration-300 hover:bg-gold active:scale-95"
         >
           Buy Now
         </button>

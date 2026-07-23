@@ -31,7 +31,7 @@ export default async function AdminMessagesPage() {
                   <p className="text-sm font-semibold text-ink">
                     {m.subject}
                     {!m.read && (
-                      <span className="ml-2 rounded-full bg-gold px-2 py-0.5 text-[10px] font-semibold text-green-dark">
+                      <span className="ml-2 rounded-full bg-gold px-2 py-0.5 text-[10px] font-semibold text-background">
                         NEW
                       </span>
                     )}

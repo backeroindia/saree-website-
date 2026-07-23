@@ -126,14 +126,14 @@ export default async function OrderPage({
         {!isGuestOrder && (
           <Link
             href="/account"
-            className="rounded-full border border-gold px-6 py-3 text-sm font-semibold text-green-dark hover:bg-gold"
+            className="rounded-full border border-gold px-6 py-3 text-sm font-semibold text-background hover:bg-gold"
           >
             View My Orders
           </Link>
         )}
         <Link
           href="/shop"
-          className="rounded-full bg-gold px-6 py-3 text-sm font-semibold text-green-dark hover:bg-gold-hover"
+          className="rounded-full bg-gold px-6 py-3 text-sm font-semibold text-background hover:bg-gold-hover"
         >
           Continue Shopping
         </Link>

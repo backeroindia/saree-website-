@@ -20,7 +20,7 @@ export default async function Header() {
           {Array.from({ length: 2 }).map((_, i) => (
             <span key={i} className="flex items-center gap-16 px-4">
               <span>Free shipping across India on orders above ₹1,999</span>
-              <span className="text-gold">Cash on Delivery available</span>
+              <span className="text-background font-semibold">Cash on Delivery available</span>
               <span>Handwoven, sourced with care</span>
             </span>
           ))}

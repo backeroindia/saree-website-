@@ -91,7 +91,7 @@ export default function ReviewsSection({
           <button
             type="submit"
             disabled={submitting}
-            className="mt-3 rounded-full bg-gold px-5 py-2 text-sm font-semibold text-green-dark transition-all hover:bg-gold-hover disabled:opacity-60"
+            className="mt-3 rounded-full bg-gold px-5 py-2 text-sm font-semibold text-background transition-all hover:bg-gold-hover disabled:opacity-60"
           >
             {submitting ? "Submitting…" : "Submit Review"}
           </button>

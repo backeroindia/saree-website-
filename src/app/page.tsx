@@ -135,7 +135,7 @@ export default async function HomePage() {
               { value: "7 Days", label: "Easy Returns" },
             ].map((stat, i) => (
               <Reveal key={stat.label} delay={i * 100} className="text-center">
-                <p className="font-serif text-2xl font-bold text-gold sm:text-3xl">{stat.value}</p>
+                <p className="font-serif text-2xl font-bold text-background sm:text-3xl">{stat.value}</p>
                 <p className="mt-1 text-xs text-ivory/70 sm:text-sm">{stat.label}</p>
               </Reveal>
             ))}
@@ -188,7 +188,7 @@ export default async function HomePage() {
                   <h3 className="font-serif text-2xl font-semibold text-ivory">
                     {c.name}
                   </h3>
-                  <span className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-gold">
+                  <span className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-background">
                     Shop now
                     <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
                   </span>

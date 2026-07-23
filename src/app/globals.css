@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  /* Classic premium palette: forest green + ivory + antique gold + warm/pearl whites */
-  --background: #fbf9f4; /* pearl white: website background */
-  --foreground: #33342f; /* warm charcoal: body text (not specified, chosen for contrast) */
-  --color-green: #1f3d2b; /* forest green: dark surfaces — hero, header bar, footer */
-  --color-green-dark: #10241a; /* deep forest green: darkest surfaces, overlays */
-  --color-gold: #c9a24b; /* antique gold: buttons & highlights */
-  --color-gold-hover: #9c7a32; /* darker antique gold: hover state */
-  --color-ivory: #fffdf5; /* ivory: card / section background */
-  --color-ink: #1a2620; /* deep forest-black: headings */
+  /* Monochrome editorial palette: extracted from GAZU mockup */
+  --background: #f2f1ee; /* off-white: website background */
+  --foreground: #1a1a1a; /* near-black: body text */
+  --color-green: #141414; /* near-black: dark surfaces — hero, header bar, footer (no green/gold in source; using black band tone) */
+  --color-green-dark: #000000; /* pure black: darkest surfaces, overlays */
+  --color-gold: #1a1a1a; /* black: buttons & highlights (Shop Now / Explore Collection use solid black, not gold) */
+  --color-gold-hover: #3d3d3d; /* dark grey: hover state */
+  --color-ivory: #e9e7e2; /* light grey: card / section background */
+  --color-ink: #111111; /* near-black: headings */
 }
 
 @theme inline {
@@ -42,7 +42,7 @@ body {
 
 ::selection {
   background: var(--color-gold);
-  color: var(--color-green-dark);
+  color: var(--background);
 }
 
 @keyframes fade-in {

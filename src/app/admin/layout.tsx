@@ -36,7 +36,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           >
             <item.icon className="h-4 w-4" /> {item.label}
             {item.badge !== undefined && (
-              <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-gold px-1 text-[11px] font-semibold text-green-dark">
+              <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-gold px-1 text-[11px] font-semibold text-background">
                 {item.badge}
               </span>
             )}
@@ -65,7 +65,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
                 >
                   <item.icon className="h-4 w-4" /> {item.label}
                   {item.badge !== undefined && (
-                    <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-gold px-1 text-[11px] font-semibold text-green-dark">
+                    <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-gold px-1 text-[11px] font-semibold text-background">
                       {item.badge}
                     </span>
                   )}

@@ -50,12 +50,12 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
                 key={i === index ? `active-${i}` : `inactive-${i}`}
                 className={`text-ivory ${i === index ? "animate-fade-in-up" : ""}`}
               >
-                <span className="inline-flex items-center gap-2 rounded-full bg-ivory/10 px-3 py-1 text-xs font-medium tracking-wide text-gold">
+                <span className="inline-flex items-center gap-2 rounded-full bg-ivory/10 px-3 py-1 text-xs font-medium tracking-wide text-background">
                   <Sparkles className="h-3.5 w-3.5 animate-pulse" /> {slide.badge}
                 </span>
                 <h1 className="mt-4 font-serif text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
                   {slide.title}
-                  <span className="block text-gold">{slide.highlight}</span>
+                  <span className="block text-background">{slide.highlight}</span>
                 </h1>
                 <p className="mt-4 max-w-md text-sm text-ivory/80 sm:text-base">
                   {slide.description}
@@ -63,7 +63,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
                 <div className="mt-6 flex flex-wrap gap-3">
                   <Link
                     href={slide.ctaHref}
-                    className="rounded-full bg-gold px-6 py-3 text-sm font-semibold text-green-dark transition-all duration-300 hover:bg-gold-hover hover:shadow-lg hover:shadow-gold/30 hover:-translate-y-0.5 active:scale-95"
+                    className="rounded-full bg-gold px-6 py-3 text-sm font-semibold text-background transition-all duration-300 hover:bg-gold-hover hover:shadow-lg hover:shadow-gold/30 hover:-translate-y-0.5 active:scale-95"
                   >
                     {slide.ctaLabel}
                   </Link>
@@ -117,7 +117,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
                 onClick={() => goTo(i)}
                 aria-label={`Go to slide ${i + 1}`}
                 className={`h-1.5 rounded-full transition-all duration-300 ${
-                  i === index ? "w-6 bg-gold" : "w-1.5 bg-ivory/40 hover:bg-ivory/60"
+                  i === index ? "w-6 bg-background" : "w-1.5 bg-ivory/40 hover:bg-ivory/60"
                 }`}
               />
             ))}

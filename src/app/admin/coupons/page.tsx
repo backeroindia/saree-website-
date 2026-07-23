@@ -90,7 +90,7 @@ export default function AdminCouponsPage() {
         <h1 className="font-serif text-3xl font-bold text-ink">Coupons</h1>
         <button
           onClick={() => setShowForm((s) => !s)}
-          className="flex items-center gap-2 rounded-full bg-gold px-4 py-2 text-sm font-semibold text-green-dark transition-all hover:bg-gold-hover"
+          className="flex items-center gap-2 rounded-full bg-gold px-4 py-2 text-sm font-semibold text-background transition-all hover:bg-gold-hover"
         >
           <Plus className="h-4 w-4" /> New Coupon
         </button>
@@ -165,7 +165,7 @@ export default function AdminCouponsPage() {
             <button
               type="submit"
               disabled={submitting}
-              className="rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-green-dark hover:bg-gold-hover disabled:opacity-60"
+              className="rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-background hover:bg-gold-hover disabled:opacity-60"
             >
               {submitting ? "Creating…" : "Create Coupon"}
             </button>

@@ -16,21 +16,21 @@ export default function Footer() {
               className="h-10 w-10 shrink-0 rounded-full object-contain"
             />
             <span className="font-serif text-xl font-bold text-ivory">
-              N.<span className="text-gold">INIYAZHL</span>
+              N.<span className="text-background">INIYAZHL</span>
             </span>
           </div>
           <p className="mt-3 text-sm text-ivory/60">
             Handloom and silk sarees, woven with tradition and delivered to your doorstep.
           </p>
           <div className="mt-4">
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gold">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-background">
               Get updates on new arrivals
             </p>
             <NewsletterForm />
           </div>
         </div>
         <div>
-          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gold">
+          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-background">
             Shop
           </h3>
           <ul className="space-y-2 text-sm">
@@ -41,7 +41,7 @@ export default function Footer() {
           </ul>
         </div>
         <div>
-          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gold">
+          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-background">
             Company
           </h3>
           <ul className="space-y-2 text-sm">
@@ -52,7 +52,7 @@ export default function Footer() {
           </ul>
         </div>
         <div>
-          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gold">
+          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-background">
             Account
           </h3>
           <ul className="space-y-2 text-sm">
@@ -62,7 +62,7 @@ export default function Footer() {
           </ul>
         </div>
         <div>
-          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gold">
+          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-background">
             Support
           </h3>
           <ul className="space-y-2 text-sm text-ivory/60">

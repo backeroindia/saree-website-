@@ -293,7 +293,7 @@ export default function ProductForm({
         <button
           type="submit"
           disabled={submitting}
-          className="rounded-full bg-gold px-6 py-3 text-sm font-semibold text-green-dark transition-all duration-300 hover:bg-gold-hover hover:shadow-lg active:scale-95 disabled:opacity-60 disabled:active:scale-100"
+          className="rounded-full bg-gold px-6 py-3 text-sm font-semibold text-background transition-all duration-300 hover:bg-gold-hover hover:shadow-lg active:scale-95 disabled:opacity-60 disabled:active:scale-100"
         >
           {submitting ? "Saving…" : isEdit ? "Save Changes" : "Create Product"}
         </button>
