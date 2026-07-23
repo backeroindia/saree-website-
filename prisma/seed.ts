@@ -26,7 +26,23 @@ const categories = [
   },
 ];
 
-const products = [
+type ProductSeed = {
+  folder: string;
+  name: string;
+  slug: string;
+  description: string;
+  fabric: string;
+  color: string;
+  price: number;
+  compareAtPrice: number | null;
+  category: string;
+  featured: boolean;
+  images: number;
+  ext?: string;
+  imageOrder?: number[];
+};
+
+const products: ProductSeed[] = [
   {
     folder: "1",
     name: "Olive Handloom Cotton Saree with Temple Border",
