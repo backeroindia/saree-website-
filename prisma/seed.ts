@@ -393,7 +393,7 @@ const products: ProductSeed[] = [
     category: "silk-cotton-sarees",
     featured: true,
     images: 3,
-    ext: "jpg",
+    ext: "png",
   },
   {
     folder: "niy-17",
@@ -408,7 +408,7 @@ const products: ProductSeed[] = [
     category: "silk-cotton-sarees",
     featured: false,
     images: 3,
-    ext: "jpg",
+    ext: "png",
   },
   {
     folder: "niy-18",
@@ -423,7 +423,7 @@ const products: ProductSeed[] = [
     category: "cotton-sarees",
     featured: false,
     images: 3,
-    ext: "jpg",
+    ext: "png",
   },
   {
     folder: "niy-19",
@@ -438,7 +438,7 @@ const products: ProductSeed[] = [
     category: "cotton-sarees",
     featured: false,
     images: 3,
-    ext: "jpg",
+    ext: "png",
   },
   {
     folder: "niy-20",
@@ -453,7 +453,7 @@ const products: ProductSeed[] = [
     category: "cotton-sarees",
     featured: false,
     images: 3,
-    ext: "jpg",
+    ext: "png",
   },
   {
     folder: "niy-21",
@@ -468,7 +468,7 @@ const products: ProductSeed[] = [
     category: "cotton-sarees",
     featured: false,
     images: 2,
-    ext: "jpg",
+    ext: "png",
   },
   {
     folder: "niy-22",
@@ -483,7 +483,7 @@ const products: ProductSeed[] = [
     category: "cotton-sarees",
     featured: false,
     images: 3,
-    ext: "jpg",
+    ext: "png",
   },
   {
     folder: "niy-23",
@@ -498,7 +498,7 @@ const products: ProductSeed[] = [
     category: "silk-cotton-sarees",
     featured: true,
     images: 2,
-    ext: "jpg",
+    ext: "png",
   },
   {
     folder: "niy-24",
@@ -513,7 +513,7 @@ const products: ProductSeed[] = [
     category: "cotton-sarees",
     featured: false,
     images: 3,
-    ext: "jpg",
+    ext: "png",
   },
   {
     folder: "niy-25",
@@ -528,7 +528,7 @@ const products: ProductSeed[] = [
     category: "silk-cotton-sarees",
     featured: false,
     images: 3,
-    ext: "jpg",
+    ext: "png",
   },
   {
     folder: "niy-26",
@@ -543,7 +543,7 @@ const products: ProductSeed[] = [
     category: "cotton-sarees",
     featured: false,
     images: 3,
-    ext: "jpg",
+    ext: "png",
   },
   {
     folder: "niy-27",
@@ -558,7 +558,7 @@ const products: ProductSeed[] = [
     category: "cotton-sarees",
     featured: false,
     images: 3,
-    ext: "jpg",
+    ext: "png",
   },
   {
     folder: "niy-28",
@@ -573,7 +573,7 @@ const products: ProductSeed[] = [
     category: "silk-cotton-sarees",
     featured: false,
     images: 3,
-    ext: "jpg",
+    ext: "png",
   },
   {
     folder: "niy-29",
@@ -588,7 +588,7 @@ const products: ProductSeed[] = [
     category: "printed-sarees",
     featured: false,
     images: 3,
-    ext: "jpg",
+    ext: "png",
   },
   {
     folder: "niy-30",
@@ -603,7 +603,7 @@ const products: ProductSeed[] = [
     category: "cotton-sarees",
     featured: true,
     images: 3,
-    ext: "jpg",
+    ext: "png",
   },
   {
     folder: "niy-31",
@@ -618,7 +618,7 @@ const products: ProductSeed[] = [
     category: "silk-cotton-sarees",
     featured: false,
     images: 2,
-    ext: "jpg",
+    ext: "png",
   },
   {
     folder: "niy-32",
@@ -1262,7 +1262,7 @@ const products: ProductSeed[] = [
     compareAtPrice: 199900,
     category: "printed-sarees",
     featured: false,
-    images: 3,
+    images: 2,
     ext: "jpg",
   },
   {
@@ -1277,7 +1277,7 @@ const products: ProductSeed[] = [
     compareAtPrice: null,
     category: "printed-sarees",
     featured: false,
-    images: 3,
+    images: 2,
     ext: "jpg",
   },
   {
@@ -1292,7 +1292,7 @@ const products: ProductSeed[] = [
     compareAtPrice: null,
     category: "printed-sarees",
     featured: false,
-    images: 3,
+    images: 2,
     ext: "jpg",
   },
   {
@@ -1382,7 +1382,7 @@ const products: ProductSeed[] = [
     compareAtPrice: null,
     category: "silk-cotton-sarees",
     featured: false,
-    images: 3,
+    images: 2,
     ext: "jpg",
   },
   {
@@ -1442,7 +1442,7 @@ const products: ProductSeed[] = [
     compareAtPrice: 199900,
     category: "silk-cotton-sarees",
     featured: true,
-    images: 3,
+    images: 2,
     ext: "jpg",
   },
   {
@@ -1472,7 +1472,7 @@ const products: ProductSeed[] = [
     compareAtPrice: null,
     category: "printed-sarees",
     featured: false,
-    images: 3,
+    images: 2,
     ext: "jpg",
   },
   {
@@ -1487,7 +1487,7 @@ const products: ProductSeed[] = [
     compareAtPrice: 229900,
     category: "printed-sarees",
     featured: false,
-    images: 3,
+    images: 2,
     ext: "jpg",
   },
   {
