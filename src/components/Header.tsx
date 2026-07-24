@@ -40,7 +40,7 @@ export default async function Header() {
               N.<span className="text-gold transition-colors group-hover:text-gold-hover">INIYAZHL</span>
             </span>
             <span className="block text-[10px] uppercase tracking-[0.3em] text-ink/50">
-              Handloom &amp; Silk Sarees
+              Handpicked with love
             </span>
           </span>
         </Link>
