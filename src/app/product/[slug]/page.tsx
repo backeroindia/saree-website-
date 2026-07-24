@@ -11,6 +11,7 @@ import ProductCard from "@/components/ProductCard";
 import ReviewsSection from "@/components/ReviewsSection";
 import StarRating from "@/components/StarRating";
 import WishlistButton from "@/components/WishlistButton";
+import Reveal from "@/components/Reveal";
 
 export async function generateMetadata({
   params,
@@ -64,7 +65,7 @@ export default async function ProductPage({
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
         <ProductGallery images={images} name={product.name} />
 
-        <div>
+        <div className="animate-fade-in-up">
           <p className="text-xs uppercase tracking-wide text-gold">{product.category.name}</p>
           <h1 className="mt-1 font-serif text-3xl font-bold text-ink">{product.name}</h1>
           <p className="mt-1 text-sm text-ink/50">{product.fabric} · {product.color}</p>
@@ -131,8 +132,10 @@ export default async function ProductPage({
         <section className="mt-16">
           <h2 className="mb-6 font-serif text-2xl font-bold text-ink">You may also like</h2>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {related.map((p) => (
-              <ProductCard key={p.id} product={p} wishlisted={wishlistIds.has(p.id)} />
+            {related.map((p, i) => (
+              <Reveal key={p.id} delay={(i % 4) * 80} className="h-full">
+                <ProductCard product={p} wishlisted={wishlistIds.has(p.id)} />
+              </Reveal>
             ))}
           </div>
         </section>

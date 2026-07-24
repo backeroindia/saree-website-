@@ -71,9 +71,9 @@ export default async function OrderPage({
         <ul className="divide-y divide-gold/10">
           {order.items.map((item) => (
             <li key={item.id} className="flex gap-4 py-4">
-              <div className="relative h-20 w-16 shrink-0 overflow-hidden rounded-lg bg-ivory">
+              <div className="relative aspect-[3/4] w-20 shrink-0 overflow-hidden rounded-lg bg-ivory sm:w-24">
                 {item.image && (
-                  <Image src={item.image} alt={item.name} fill sizes="4rem" className="object-cover" />
+                  <Image src={item.image} alt={item.name} fill sizes="6rem" className="object-cover" />
                 )}
               </div>
               <div className="flex flex-1 items-center justify-between">
@@ -126,7 +126,7 @@ export default async function OrderPage({
         {!isGuestOrder && (
           <Link
             href="/account"
-            className="rounded-full border border-gold px-6 py-3 text-sm font-semibold text-background hover:bg-gold"
+            className="rounded-full border border-gold px-6 py-3 text-sm font-semibold text-gold transition-colors hover:bg-gold hover:text-background"
           >
             View My Orders
           </Link>

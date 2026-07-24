@@ -3,12 +3,15 @@ import { Download, Receipt } from "lucide-react";
 import { prisma } from "@/lib/db";
 import { formatINR } from "@/lib/money";
 import OrderStatusSelect from "@/components/admin/OrderStatusSelect";
+import ShiprocketAction from "@/components/admin/ShiprocketAction";
+import { isShiprocketConfigured } from "@/lib/shiprocket";
 
 export default async function AdminOrdersPage() {
   const orders = await prisma.order.findMany({
     include: { items: true, user: true, address: true },
     orderBy: { createdAt: "desc" },
   });
+  const shiprocketEnabled = isShiprocketConfigured();
 
   return (
     <div>
@@ -33,6 +36,7 @@ export default async function AdminOrdersPage() {
               <th className="p-4 font-medium">Payment</th>
               <th className="p-4 font-medium">Total</th>
               <th className="p-4 font-medium">Status</th>
+              <th className="p-4 font-medium">Shipping</th>
               <th className="p-4 font-medium"></th>
             </tr>
           </thead>
@@ -69,6 +73,13 @@ export default async function AdminOrdersPage() {
                   <OrderStatusSelect orderId={o.id} status={o.status} />
                 </td>
                 <td className="p-4">
+                  <ShiprocketAction
+                    orderId={o.id}
+                    enabled={shiprocketEnabled}
+                    shiprocketOrderId={o.shiprocketOrderId}
+                  />
+                </td>
+                <td className="p-4">
                   <Link
                     href={`/admin/orders/${o.id}/invoice`}
                     className="flex items-center gap-1 text-xs font-medium text-green hover:underline"
@@ -80,7 +91,7 @@ export default async function AdminOrdersPage() {
             ))}
             {orders.length === 0 && (
               <tr>
-                <td colSpan={7} className="p-8 text-center text-ink/50">
+                <td colSpan={8} className="p-8 text-center text-ink/50">
                   No orders yet.
                 </td>
               </tr>

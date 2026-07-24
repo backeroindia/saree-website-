@@ -7,11 +7,24 @@ import CartBadge from "@/components/CartBadge";
 import LogoutButton from "@/components/LogoutButton";
 import MobileNav from "@/components/MobileNav";
 
+const SPECIAL_NAV = [
+  { label: "Salwar/Kurthi", slug: "salwar-kurthi" },
+  { label: "Kids", slug: "kids" },
+  { label: "Men", slug: "men" },
+];
+
 export default async function Header() {
   const [session, categories] = await Promise.all([
     getSession(),
     getCategories(),
   ]);
+
+  const specialSlugs = new Set(SPECIAL_NAV.map((n) => n.slug));
+  const sareeCategories = categories.filter((c) => !specialSlugs.has(c.slug));
+  const specialNav = SPECIAL_NAV.map((n) => ({
+    ...n,
+    active: (categories.find((c) => c.slug === n.slug)?._count.products ?? 0) > 0,
+  }));
 
   return (
     <header className="sticky top-0 z-40 border-b border-gold/20 bg-background/95 backdrop-blur">
@@ -46,19 +59,28 @@ export default async function Header() {
         </Link>
 
         <nav className="hidden items-center gap-6 text-sm font-medium text-ink/80 md:flex">
-          <span className="flex cursor-not-allowed items-center gap-1.5 py-1 text-ink/35" title="Coming soon">
+          <Link href="/shop?sort=newest" className="relative py-1 transition-colors hover:text-green after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-gold after:transition-all after:duration-300 hover:after:w-full">
             New Arrivals
-            <span className="rounded-full bg-ink/10 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide">Soon</span>
-          </span>
+          </Link>
           <Link href="/shop" className="relative py-1 transition-colors hover:text-green after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-gold after:transition-all after:duration-300 hover:after:w-full">
             Saree
           </Link>
-          {["Salwar/Kurthi", "Kids", "Men"].map((label) => (
-            <span key={label} className="flex cursor-not-allowed items-center gap-1.5 py-1 text-ink/35" title="Coming soon">
-              {label}
-              <span className="rounded-full bg-ink/10 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide">Soon</span>
-            </span>
-          ))}
+          {specialNav.map((item) =>
+            item.active ? (
+              <Link
+                key={item.slug}
+                href={`/shop?category=${item.slug}`}
+                className="relative py-1 transition-colors hover:text-green after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-gold after:transition-all after:duration-300 hover:after:w-full"
+              >
+                {item.label}
+              </Link>
+            ) : (
+              <span key={item.slug} className="flex cursor-not-allowed items-center gap-1.5 py-1 text-ink/35" title="Coming soon">
+                {item.label}
+                <span className="rounded-full bg-ink/10 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide">Soon</span>
+              </span>
+            )
+          )}
           <Link href="/about" className="relative py-1 transition-colors hover:text-green after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-gold after:transition-all after:duration-300 hover:after:w-full">
             About
           </Link>
@@ -114,7 +136,8 @@ export default async function Header() {
           </Link>
 
           <MobileNav
-            categories={categories.map((c) => ({ id: c.id, name: c.name, slug: c.slug }))}
+            categories={sareeCategories.map((c) => ({ id: c.id, name: c.name, slug: c.slug }))}
+            specialNav={specialNav}
             session={session ? { name: session.name, role: session.role } : null}
           />
         </div>

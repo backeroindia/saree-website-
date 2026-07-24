@@ -15,7 +15,7 @@ export default function ProductGallery({
 
   return (
     <div>
-      <div className="animate-fade-in relative aspect-[3/4] w-full overflow-hidden rounded-xl border border-gold/15 bg-ivory">
+      <div className="group animate-fade-in relative aspect-[3/4] w-full overflow-hidden rounded-xl border border-gold/15 bg-ivory">
         {images[active] && (
           <Image
             key={images[active]}
@@ -24,7 +24,7 @@ export default function ProductGallery({
             fill
             priority
             sizes="(min-width: 1024px) 40vw, 90vw"
-            className="animate-fade-in object-cover"
+            className="animate-fade-in object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           />
         )}
       </div>

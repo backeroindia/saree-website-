@@ -78,7 +78,7 @@ export default function AddToCart({ productId, slug, name, image, price, stock }
             addItem({ productId, slug, name, image, price, stock }, qty);
             router.push("/cart");
           }}
-          className="flex-1 rounded-full border border-gold px-6 py-3 text-sm font-semibold text-background transition-all duration-300 hover:bg-gold active:scale-95"
+          className="flex-1 rounded-full border border-gold px-6 py-3 text-sm font-semibold text-gold transition-all duration-300 hover:bg-gold hover:text-background active:scale-95"
         >
           Buy Now
         </button>

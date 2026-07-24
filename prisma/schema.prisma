@@ -172,6 +172,12 @@ model Order {
   paymentMethod   PaymentMethod
   paymentStatus   PaymentStatus @default(PENDING)
   notes           String?
+  shiprocketOrderId    String?
+  shiprocketShipmentId String?
+  awbCode              String?
+  courierName          String?
+  trackingUrl          String?
+  shippedAt            DateTime?
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 }

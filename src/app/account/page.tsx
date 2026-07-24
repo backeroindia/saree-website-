@@ -35,7 +35,7 @@ export default async function AccountPage() {
           <h1 className="font-serif text-3xl font-bold text-ink">My Account</h1>
           <p className="mt-1 text-sm text-ink/60">{session.name} · {session.email}</p>
         </div>
-        <LogoutButton className="rounded-full border border-gold px-4 py-2 text-sm font-medium text-background hover:bg-gold" />
+        <LogoutButton className="rounded-full border border-gold px-4 py-2 text-sm font-medium text-gold transition-colors hover:bg-gold hover:text-background" />
       </div>
 
       <div className="mt-6 flex flex-wrap gap-3">

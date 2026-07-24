@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Star, X } from "lucide-react";
+import { Star, X, UploadCloud, Loader2 } from "lucide-react";
 import clsx from "clsx";
 
 type Category = { id: string; name: string };
@@ -60,12 +60,36 @@ export default function ProductForm({
   const [library, setLibrary] = useState<{ folder: string; images: string[] }[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/admin/image-library")
       .then((r) => r.json())
       .then((data) => setLibrary(data.folders ?? []));
   }, []);
+
+  async function handleUpload(fileList: FileList | null) {
+    if (!fileList || fileList.length === 0) return;
+    setUploading(true);
+    setUploadError(null);
+
+    const body = new FormData();
+    Array.from(fileList).forEach((file) => body.append("files", file));
+    body.append("folder", form.slug || form.name || "product");
+
+    const res = await fetch("/api/admin/image-library/upload", { method: "POST", body });
+    const data = await res.json().catch(() => ({}));
+    setUploading(false);
+
+    if (!res.ok) {
+      setUploadError(data.error ?? "Upload failed");
+      return;
+    }
+
+    setLibrary((lib) => [{ folder: data.folder, images: data.images }, ...lib]);
+    setForm((f) => ({ ...f, images: [...f.images, ...data.images] }));
+  }
 
   function toggleImage(src: string) {
     setForm((f) => ({
@@ -120,7 +144,7 @@ export default function ProductForm({
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid grid-cols-1 gap-4 rounded-xl border border-gold/15 bg-white p-6 sm:grid-cols-2">
         <div className="sm:col-span-2">
-          <label className="mb-1 block text-xs font-medium text-ink/60">Product Name</label>
+          <label className="mb-1 block text-xs font-medium text-ink/60">Product Name <span className="text-red-500">*</span></label>
           <input
             required
             value={form.name}
@@ -137,7 +161,7 @@ export default function ProductForm({
         </div>
 
         <div className="sm:col-span-2">
-          <label className="mb-1 block text-xs font-medium text-ink/60">Slug (URL)</label>
+          <label className="mb-1 block text-xs font-medium text-ink/60">Slug (URL) <span className="text-red-500">*</span></label>
           <input
             required
             value={form.slug}
@@ -150,7 +174,7 @@ export default function ProductForm({
         </div>
 
         <div className="sm:col-span-2">
-          <label className="mb-1 block text-xs font-medium text-ink/60">Description</label>
+          <label className="mb-1 block text-xs font-medium text-ink/60">Description <span className="text-red-500">*</span></label>
           <textarea
             required
             rows={4}
@@ -161,7 +185,7 @@ export default function ProductForm({
         </div>
 
         <div>
-          <label className="mb-1 block text-xs font-medium text-ink/60">Fabric</label>
+          <label className="mb-1 block text-xs font-medium text-ink/60">Fabric <span className="text-red-500">*</span></label>
           <input
             required
             value={form.fabric}
@@ -170,7 +194,7 @@ export default function ProductForm({
           />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-ink/60">Colour</label>
+          <label className="mb-1 block text-xs font-medium text-ink/60">Colour <span className="text-red-500">*</span></label>
           <input
             required
             value={form.color}
@@ -180,7 +204,7 @@ export default function ProductForm({
         </div>
 
         <div>
-          <label className="mb-1 block text-xs font-medium text-ink/60">Category</label>
+          <label className="mb-1 block text-xs font-medium text-ink/60">Category <span className="text-red-500">*</span></label>
           <select
             required
             value={form.categoryId}
@@ -208,7 +232,7 @@ export default function ProductForm({
         </div>
 
         <div>
-          <label className="mb-1 block text-xs font-medium text-ink/60">Price (₹)</label>
+          <label className="mb-1 block text-xs font-medium text-ink/60">Price (₹) <span className="text-red-500">*</span></label>
           <input
             required
             type="number"
@@ -236,7 +260,7 @@ export default function ProductForm({
           />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-ink/60">Stock Quantity</label>
+          <label className="mb-1 block text-xs font-medium text-ink/60">Stock Quantity <span className="text-red-500">*</span></label>
           <input
             required
             type="number"
@@ -250,12 +274,41 @@ export default function ProductForm({
 
       <div className="rounded-xl border border-gold/15 bg-white p-6">
         <div className="flex items-center justify-between">
-          <label className="text-sm font-medium text-ink">Product Images</label>
+          <label className="text-sm font-medium text-ink">Product Images <span className="text-red-500">*</span></label>
           <span className="text-xs text-ink/40">{form.images.length} selected</span>
         </div>
         <p className="mt-1 text-xs text-ink/50">
-          Click photos below to select them for this product (from public/images/products).
+          Upload new photos, or click existing photos below to select them (from public/images/products).
         </p>
+
+        <label
+          className={clsx(
+            "mt-3 flex cursor-pointer flex-col items-center gap-1 rounded-lg border-2 border-dashed border-gold/30 px-4 py-6 text-center transition-colors hover:border-gold/60 hover:bg-gold/5",
+            uploading && "pointer-events-none opacity-60"
+          )}
+        >
+          {uploading ? (
+            <Loader2 className="h-5 w-5 animate-spin text-gold" />
+          ) : (
+            <UploadCloud className="h-5 w-5 text-gold" />
+          )}
+          <span className="text-sm font-medium text-ink/70">
+            {uploading ? "Uploading…" : "Upload new photos"}
+          </span>
+          <span className="text-xs text-ink/40">PNG, JPG or WEBP — up to 10MB each</span>
+          <input
+            type="file"
+            accept="image/png,image/jpeg,image/webp"
+            multiple
+            disabled={uploading}
+            onChange={(e) => {
+              handleUpload(e.target.files);
+              e.target.value = "";
+            }}
+            className="hidden"
+          />
+        </label>
+        {uploadError && <p className="mt-2 text-sm text-red-600">{uploadError}</p>}
 
         {form.images.length > 0 && (
           <>

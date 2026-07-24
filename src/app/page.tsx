@@ -160,7 +160,7 @@ export default async function HomePage() {
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
               {bestsellers.map((p, i) => (
                 <Reveal key={p.id} delay={(i % 4) * 80} className="h-full">
-                  <ProductCard product={p} wishlisted={wishlistIds.has(p.id)} />
+                  <ProductCard product={p} wishlisted={wishlistIds.has(p.id)} badge="Bestseller" />
                 </Reveal>
               ))}
             </div>
@@ -176,7 +176,7 @@ export default async function HomePage() {
           </h2>
         </Reveal>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-          {categories.map((c, i) => (
+          {categories.filter((c) => c._count.products > 0).map((c, i) => (
             <Reveal key={c.id} delay={i * 100}>
               <Link
                 href={`/shop?category=${c.slug}`}
@@ -252,7 +252,7 @@ export default async function HomePage() {
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             {newArrivals.map((p, i) => (
               <Reveal key={p.id} delay={i * 80} className="h-full">
-                <ProductCard product={p} wishlisted={wishlistIds.has(p.id)} />
+                <ProductCard product={p} wishlisted={wishlistIds.has(p.id)} badge="New" />
               </Reveal>
             ))}
           </div>

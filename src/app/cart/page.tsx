@@ -46,11 +46,20 @@ export default function CartPage() {
             <div
               key={item.productId}
               style={{ animationDelay: `${i * 60}ms` }}
-              className="animate-fade-in-up flex gap-4 rounded-xl border border-gold/15 bg-white p-4 transition-shadow duration-300 hover:shadow-md"
+              className="animate-fade-in-up flex gap-4 rounded-xl border border-gold/15 bg-white p-4 transition-shadow duration-300 hover:shadow-md sm:gap-5"
             >
-              <Link href={`/product/${item.slug}`} className="relative h-28 w-24 shrink-0 overflow-hidden rounded-lg bg-ivory">
+              <Link
+                href={`/product/${item.slug}`}
+                className="group relative aspect-[3/4] w-28 shrink-0 overflow-hidden rounded-lg bg-ivory sm:w-36 md:w-40"
+              >
                 {item.image && (
-                  <Image src={item.image} alt={item.name} fill sizes="6rem" className="object-cover" />
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    sizes="(min-width: 768px) 10rem, (min-width: 640px) 9rem, 7rem"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
                 )}
               </Link>
               <div className="flex flex-1 flex-col justify-between">

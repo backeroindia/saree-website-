@@ -10,7 +10,10 @@ export function parseImages(images: string): string[] {
 }
 
 export async function getCategories() {
-  return prisma.category.findMany({ orderBy: { name: "asc" } });
+  return prisma.category.findMany({
+    orderBy: { name: "asc" },
+    include: { _count: { select: { products: true } } },
+  });
 }
 
 export function averageRating(reviews: { rating: number }[]): number {
@@ -43,19 +46,28 @@ export async function getBestsellers(limit = 4) {
     take: limit,
   });
 
-  if (grouped.length === 0) {
-    return getFeaturedProducts(limit);
-  }
-
   const products = await prisma.product.findMany({
     where: { id: { in: grouped.map((g) => g.productId) } },
     include: { category: true, reviews: { select: { rating: true } } },
   });
   const productMap = new Map(products.map((p) => [p.id, p]));
 
-  return grouped
+  const ranked = grouped
     .map((g) => productMap.get(g.productId))
     .filter((p): p is NonNullable<typeof p> => Boolean(p));
+
+  if (ranked.length >= limit) return ranked;
+
+  // Store is still building sales history — pad the section with featured
+  // picks so the homepage doesn't look sparse while real rankings grow in.
+  const fillers = await prisma.product.findMany({
+    where: { featured: true, id: { notIn: ranked.map((p) => p.id) } },
+    include: { category: true, reviews: { select: { rating: true } } },
+    orderBy: { createdAt: "desc" },
+    take: limit - ranked.length,
+  });
+
+  return [...ranked, ...fillers];
 }
 
 export async function getTopReviews(limit = 6) {

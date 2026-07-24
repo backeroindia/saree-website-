@@ -74,7 +74,7 @@ export default function ContactPage() {
               </p>
               <button
                 onClick={() => setStatus("idle")}
-                className="mt-6 rounded-full border border-gold px-5 py-2 text-sm font-semibold text-background transition-all hover:bg-gold active:scale-95"
+                className="mt-6 rounded-full border border-gold px-5 py-2 text-sm font-semibold text-gold transition-all hover:bg-gold hover:text-background active:scale-95"
               >
                 Send another message
               </button>

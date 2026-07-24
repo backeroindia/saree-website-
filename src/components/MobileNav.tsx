@@ -7,13 +7,16 @@ import { Menu, X, ShieldCheck } from "lucide-react";
 import LogoutButton from "@/components/LogoutButton";
 
 type Category = { id: string; name: string; slug: string };
+type SpecialNavItem = { label: string; slug: string; active: boolean };
 type SessionInfo = { name: string; role: "CUSTOMER" | "ADMIN" } | null;
 
 export default function MobileNav({
   categories,
+  specialNav,
   session,
 }: {
   categories: Category[];
+  specialNav: SpecialNavItem[];
   session: SessionInfo;
 }) {
   const [open, setOpen] = useState(false);
@@ -56,10 +59,9 @@ export default function MobileNav({
         )}
 
         <nav className="mt-6 flex flex-col gap-1 text-sm font-medium text-ink/80">
-          <span className="flex cursor-not-allowed items-center justify-between rounded-lg px-2 py-2.5 text-ink/35">
+          <Link href="/shop?sort=newest" onClick={() => setOpen(false)} className="rounded-lg px-2 py-2.5 transition-colors hover:bg-gold/10 hover:text-green">
             New Arrivals
-            <span className="rounded-full bg-ink/10 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide">Soon</span>
-          </span>
+          </Link>
           <Link href="/shop" onClick={() => setOpen(false)} className="rounded-lg px-2 py-2.5 transition-colors hover:bg-gold/10 hover:text-green">
             Saree
           </Link>
@@ -73,12 +75,23 @@ export default function MobileNav({
               {c.name}
             </Link>
           ))}
-          {["Salwar/Kurthi", "Kids", "Men"].map((label) => (
-            <span key={label} className="flex cursor-not-allowed items-center justify-between rounded-lg px-2 py-2.5 text-ink/35">
-              {label}
-              <span className="rounded-full bg-ink/10 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide">Soon</span>
-            </span>
-          ))}
+          {specialNav.map((item) =>
+            item.active ? (
+              <Link
+                key={item.slug}
+                href={`/shop?category=${item.slug}`}
+                onClick={() => setOpen(false)}
+                className="rounded-lg px-2 py-2.5 transition-colors hover:bg-gold/10 hover:text-green"
+              >
+                {item.label}
+              </Link>
+            ) : (
+              <span key={item.slug} className="flex cursor-not-allowed items-center justify-between rounded-lg px-2 py-2.5 text-ink/35">
+                {item.label}
+                <span className="rounded-full bg-ink/10 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide">Soon</span>
+              </span>
+            )
+          )}
           <div className="my-2 border-t border-gold/15" />
           <Link href="/about" onClick={() => setOpen(false)} className="rounded-lg px-2 py-2.5 transition-colors hover:bg-gold/10 hover:text-green">
             About Us

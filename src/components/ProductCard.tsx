@@ -22,9 +22,11 @@ type ProductCardProduct = {
 export default function ProductCard({
   product,
   wishlisted = false,
+  badge,
 }: {
   product: ProductCardProduct;
   wishlisted?: boolean;
+  badge?: string;
 }) {
   const images = parseImages(product.images);
   const image = images[0];
@@ -37,6 +39,11 @@ export default function ProductCard({
     >
       <div className="relative aspect-[3/4] w-full overflow-hidden bg-ivory">
         <WishlistButton productId={product.id} initialWishlisted={wishlisted} />
+        {badge && (
+          <span className="animate-fade-in absolute left-2 top-2 z-10 rounded-full bg-green px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-background shadow-sm">
+            {badge}
+          </span>
+        )}
         {image && (
           <Image
             src={image}
@@ -47,11 +54,15 @@ export default function ProductCard({
           />
         )}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-green-dark/20 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-        {product.stock <= 0 && (
+        {product.stock <= 0 ? (
           <span className="absolute inset-x-0 bottom-0 bg-ink/80 py-1 text-center text-xs font-medium text-white">
             Out of stock
           </span>
-        )}
+        ) : product.stock <= 5 ? (
+          <span className="absolute inset-x-0 bottom-0 bg-gold/90 py-1 text-center text-xs font-medium text-background">
+            Only {product.stock} left
+          </span>
+        ) : null}
       </div>
       <div className="p-3">
         <p className="text-[11px] uppercase tracking-wide text-gold">
